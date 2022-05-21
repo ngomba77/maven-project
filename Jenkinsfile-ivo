@@ -1,11 +1,69 @@
 pipeline {
     agent any
+     
+     environment {
+        DOCKERHUB_CREDENTIALS_=credentials('dockerhub')
+        
+    }
+
+    options { buildDiscarder(logRotator(artifactDaysToKeepStr: '',
+     artifactNumToKeepStr: '', daysToKeepStr: '3', numToKeepStr: '5')),
+      disableConcurrentBuilds() }
 
     stages {
-        stage('Hello') {
+        
+        stage('Build images ') {
             steps {
-                echo 'Hello World'
+                sh '''
+                docker build -t ivo:001 .
+
+                '''
             }
+        }
+        stage {
+            steps ('Tag image ') {
+                sh '''
+                docker tag ivo:001 devopseaasylearning2021/ivo:001
+                '''
+            }
+        }
+        
+        stage {
+                steps ('Docker login') {
+                sh '''
+                'echo $DOCKERHUB_CREDENTIALS_psw | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                '''
+            }
+        }
+
+        stage ('Docker push') {
+            steps {
+                sh '''
+                docker push devopseasylearning2021/ivo:001
+                '''
+            }
+
+        }
+
+    }
+     
+   post {
+   
+      success {
+         slackSend (channel: '#development-alerts', color: 'good', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+
+ 
+      unstable {
+        slackSend (channel: '#development-alerts', color: 'warning', message: "UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+
+      failure {
+        slackSend (channel: '#development-alerts', color: '#FF0000', message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+   
+      cleanup {
+        deleteDir()
         }
     }
 }
