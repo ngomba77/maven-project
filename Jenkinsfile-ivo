@@ -1,22 +1,11 @@
 pipeline {
-    agent {any}
+    agent any
+
     stages {
-        stage('build docker images') {
-            agant {label 'ubuntu'}
+        stage('Hello') {
             steps {
-              sh ' docker build -t ivon:01 .'
+                echo 'Hello World'
             }
         }
-
-       
-        
-
     }
-
-
-
-
-
-
-
 }
