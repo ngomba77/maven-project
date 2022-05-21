@@ -8,49 +8,8 @@ pipeline {
             }
         }
 
-        stage('push to nexus') {
-            agent {label 'ubuntu'}
-            steps {
-                sh ' docker build -t ivon:012 .'
-            }
-        }
-
-
-        stage('push to dockerhub') {
-            agent {label 'ubuntu'}
-            steps {
-               sh ' docker build -t ivon:0123 .'
-            }
-        }
-
-        stage('push to ansible') {
-            agent {label 'ubuntu'}
-            steps {
-                sh ' docker build -t ivon:01234 .'
-            }
-        }
-
-        stage('ansible deploy to k8s') {
-            agent {label 'ubuntu'}
-            steps {
-               sh ' docker build -t ivon:012345 .'
-            }
-        }
-
-        stage('verify') {
-            agent {label 'ubuntu'}
-            steps {
-               sh ' docker build -t ivon:0123456 .'
-            }
-        }
-
-
-        stage('clean') {
-            agent {label 'ubuntu'}
-            steps {
-                sh ' docker build -t ivon:01234567 .'
-            }
-        }
+       
+        
 
     }
 
