@@ -13,7 +13,7 @@ pipeline {
         stage('Build images ') {
             steps {
                 sh '''
-                docker build -t ivo:011 .
+                docker build -t ivo:001 .
 
                 '''
             }
