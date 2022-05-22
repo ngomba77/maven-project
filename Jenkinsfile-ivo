@@ -148,7 +148,7 @@ stage('build ') {
 
             steps {
                sh '''
-           docker build -t devopseasylearning2021/eric:$ImageTAG .
+           docker build -t devopseasylearning2021/ivo:$ImageTAG .
                '''
             }
         }
@@ -171,7 +171,7 @@ stage('build ') {
      stage('Docker push ') {
             steps {
                sh '''
-              docker push devopseasylearning2021/eric:$ImageTAG 
+              docker push devopseasylearning2021/ivo:$ImageTAG 
                 '''
             }
         }
@@ -187,11 +187,11 @@ docker rm -f odilia || true
 rm -rf docker-compose.yml || true
 
 cat <<EOF > docker-compose.yml
-docker rmi -f devopseasylearning2021/eric:$ImageTAG || true 
+docker rmi -f devopseasylearning2021/ivo:$ImageTAG || true 
 version: "3"
 services:
     tomcat:
-       image: devopseasylearning2021/eric:$ImageTAG 
+       image: devopseasylearning2021/ivo:$ImageTAG 
        container_name: odilia
        expose:
         - 80
