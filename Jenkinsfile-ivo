@@ -13,7 +13,7 @@ pipeline {
         stage('Build images ') {
             steps {
                 sh '''
-                docker build -t ivo:001 .
+                docker build -t ivo:011 .
 
                 '''
             }
@@ -21,7 +21,7 @@ pipeline {
         stage {
             steps ('Tag image ') {
                 sh '''
-                docker tag ivo:001 devopseaasylearning2021/ivo:001
+                docker tag ivo:001 devopseaasylearning2021/ivo:011
                 '''
             }
         }
