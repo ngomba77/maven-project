@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 sh'''
-                mvvn  compile
+                mvn  compile
                 '''
             }
         }
