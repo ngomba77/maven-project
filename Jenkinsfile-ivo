@@ -8,6 +8,7 @@ pipeline {
             }
             steps {
                 sh'''
+                rm -rf  weebapp/target/webapp.war || true
                 mvn clean
                 '''
             }
@@ -68,7 +69,7 @@ pipeline {
             }
         }        
 
-         stage('innstall') {
+         stage('install') {
              agent {
                 docker { image 'maven:3.8.5-openjdk-8-slim' }
             }
@@ -78,7 +79,16 @@ pipeline {
              
                 ''' 
             } 
-        }         
+        }
+          stage('build') {
+
+            steps {
+                sh'''
+                docker build -t devopseasylearning2021:001 .
+             
+                ''' 
+            } 
+          }           
     }
     
 }       
