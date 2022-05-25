@@ -84,7 +84,7 @@ pipeline {
 
             steps {
                 sh'''
-                docker build -t devopseasylearning2021:001 .
+                docker build -t devopseasylearning2021:006 .
              
                 ''' 
             } 
