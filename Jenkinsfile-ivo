@@ -83,11 +83,11 @@ pipeline {
           stage('build') {
 
             steps {
-                sh'''
-                docker build -t devopseasylearning2021:006 .
-             
-                ''' 
-            } 
+            sh '''
+                docker build -t devopseasylearning2021/aplha:$tag  .
+                '''
+            }
+        
           }           
     }
     
