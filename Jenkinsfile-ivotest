@@ -80,7 +80,8 @@ pipeline {
                 ''' 
             } 
         }
-      post {
+    }    
+    post {
      
       unstable {
         slackSend (channel: '#jenkins', color: 'warning', message: "UNSTABLE:  No backup made on AWS_S3 '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
@@ -91,7 +92,7 @@ pipeline {
       failure {
         slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILURE:  backup made on AWS_S3 '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
-      } 
+       
     }
     
 }  
