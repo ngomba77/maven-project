@@ -1,0 +1,97 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('clean') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                rm -rf  weebapp/target/webapp.war || true
+                mvn clean
+                '''
+            }
+        }
+    
+        stage('compile') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn  compile
+                '''
+            }
+        }
+    
+        stage('validate') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn validate
+                '''
+            }
+        }    
+
+        stage('test') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn test
+                '''
+
+            }
+        }
+        stage('package') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn package
+                '''
+            }
+        }
+
+        stage('verify') {
+            agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn verify
+                '''
+            }
+        }        
+
+         stage('install') {
+             agent {
+                docker { image 'maven:3.8.5-openjdk-8-slim' }
+            }
+            steps {
+                sh'''
+                mvn install
+             
+                ''' 
+            } 
+        }
+      post {
+     
+      unstable {
+        slackSend (channel: '#jenkins', color: 'warning', message: "UNSTABLE:  No backup made on AWS_S3 '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+     success {
+        slackSend (channel: '#jenkins', color: 'good', message:  "SUCCESS:  all  backup made on AWS_S3 '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+      failure {
+        slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILURE:  backup made on AWS_S3 '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+      } 
+    }
+    
+}  
